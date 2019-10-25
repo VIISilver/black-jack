@@ -6,7 +6,9 @@ export default function Player(props) {
     return (
         <div className='individual-player'>
             <h3>Player {props.playerIdPlayers}</h3>
-            <Cards />
+            <Cards
+            playersCardsIndividual={props.playersCardsPlayers}
+             />
         </div>
     )
 }

@@ -4,7 +4,7 @@ import './Players.css'
 
 export default function Players(props) {
 
-    let numberOfPlayers = [1, 2, 3]
+    let numberOfPlayers = Array.from(Array(props.numPlayersGame).keys()).map(item => +item + 1)
 
     return (
         <div>
@@ -12,6 +12,7 @@ export default function Players(props) {
                 <Player
                 key={key}
                 playerIdPlayers={item}
+                playersCardsPlayers={props.playersCardsGame}
                 />
             ))}
         </div>
