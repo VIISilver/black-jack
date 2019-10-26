@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
+import DefaultBtn from "../buttons/DefaultBtn";
 import "./Game.css";
 
 export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      handOpen: false,
       numberOfDecks: 1,
       dealerPoints: 0,
       numberOfPlayers: 1,
@@ -35,7 +37,12 @@ export default class Game extends Component {
     fetch(deckOfCardsUrl)
       .then(status)
       .then(json)
-      .then(data => this.setState({ cardsDealt: data.cards }))
+      .then(data =>
+        this.setState({
+          cardsDealt: data.cards,
+          handOpen: !this.state.handOpen
+        })
+      )
       .catch(function(error) {
         console.log("Request failed", error);
       });
@@ -43,23 +50,18 @@ export default class Game extends Component {
 
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
   shuffleDeck = () => {
-    fetch('https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/')
+    fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/");
   };
 
   render() {
     return (
       <div className='game-wrap'>
         <h1>Black Jack</h1>
-        <button
-          style={
-            this.state.cardsDealt.length === 0
-              ? { display: "inline" }
-              : { display: "none" }
-          }
-          onClick={this.newDeal}
-        >
-          Deal
-        </button>
+        <DefaultBtn
+          displayBoolParent={this.state.handOpen}
+          callBackParent={this.newDeal}
+          txtParent={'Deal'}
+        />
         {this.state.cardsDealt.length === 0 ? (
           <div>
             <h2>Waiting for the Player to Press Deal...</h2>
@@ -67,7 +69,10 @@ export default class Game extends Component {
               If the deal button is not working press the shuffle button. Sends
               a request to the server to reset the deck.
             </p>
-        <button onClick={this.shuffleDeck}>Shuffle Deck</button>
+            <DefaultBtn
+              callBackParent={this.shuffleDeck}
+              txtParent={'Shuffle Deck'}
+            />
           </div>
         ) : (
           <div>

@@ -5,7 +5,7 @@ import './Cards.css'
 export default function Cards(props) {
 
     let cardArr = props.isDealer ? props.dealerCardsDealer : props.playersCardsIndividual
-    let cardFlipped = [false, true, true, true]
+    let cardFlipped = [true, true, true, true]
 
     return (
         <div>
