@@ -4,15 +4,14 @@ import './Players.css'
 
 export default function Players(props) {
 
-    let numberOfPlayers = Array.from(Array(props.numPlayersGame).keys()).map(item => +item + 1)
-
     return (
         <div>
-            {numberOfPlayers.map((item, key) => (
+            {props.playersCardsGame.map((item, key) => (
                 <Player
                 key={key}
-                playerIdPlayers={item}
-                playersCardsPlayers={props.playersCardsGame}
+                playerIdPlayers={key + 1}
+                playersCardsPlayers={item}
+                hitNextPlayers={props.hitNextGame}
                 />
             ))}
         </div>

@@ -5,6 +5,10 @@ import "./BeforeDeal.css";
 export default function BeforeDeal(props) {
   return (
     <div>
+      <DefaultBtn
+        callBackParent={props.dealParent}
+        txtParent={'Deal'}
+      />
       <h2>Waiting for the Player to Press Deal...</h2>
       <p>
         If the deal button is not working press the shuffle button. Sends a
@@ -12,7 +16,7 @@ export default function BeforeDeal(props) {
       </p>
       <DefaultBtn
         callBackParent={props.shuffleDeckParent}
-        txtParent={"Shuffle Deck"}
+        txtParent={'Shuffle Deck'}
       />
     </div>
   );

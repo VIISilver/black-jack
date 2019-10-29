@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import Dealer from "../dealer/Dealer";
-import Players from "../players/Players";
-import DefaultBtn from "../buttons/DefaultBtn";
+import React, { Component } from 'react'
+import Dealer from '../dealer/Dealer'
+import Players from "../players/Players"
+import DefaultBtn from '../buttons/DefaultBtn'
 import BeforeDeal from '../beforeDeal/BeforeDeal'
-import "./Game.css";
+import './Game.css'
 
 export default class Game extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class Game extends Component {
       playerIndexTurn: 0,
       numberOfDecks: 1,
       dealerPoints: 0,
-      numberOfPlayers: 1,
+      numberOfPlayers: 2,
       playerPoints: 0,
       cardsDealt: [],
       allPlayersCards: [],
@@ -42,14 +42,15 @@ export default class Game extends Component {
       .then(status)
       .then(json)
       .then(data => {
-        let playerCards = []
         let totalIteration = this.state.numberOfPlayers + 1
+        let playerCards = []
         for (let i = 0; i < totalIteration; i++) {
           playerCards.push([data.cards[i], data.cards[i + totalIteration]])
         }
-        console.log(data.cards)
         this.setState({
           cardsDealt: data.cards,
+          allPlayersCards: playerCards.slice(0, playerCards.length - 1),
+          dealersCards: playerCards[playerCards.length - 1],
           handOpen: true
         })
       })
@@ -105,26 +106,18 @@ export default class Game extends Component {
         txtParent={'Console State'}
         callBackParent={this.consoleState}
         />
-        <DefaultBtn
-          displayBoolParent={this.state.handOpen}
-          callBackParent={this.newDeal}
-          txtParent={'Deal'}
-        />
         {this.state.cardsDealt.length === 0 ? (
           <BeforeDeal
+          dealParent={this.newDeal}
           shuffleDeckParent={this.shuffleDeck} />
         ) : (
           <div>
             <Dealer
-              dealerCardsGame={this.state.cardsDealt.filter(
-                (item, key) => key % 2 !== 0
-              )}
+              dealerCardsGame={this.state.dealersCards}
             />
             <Players
               numPlayersGame={this.state.numberOfPlayers}
-              playersCardsGame={this.state.cardsDealt.filter(
-                (item, key) => key % 2 === 0
-              )}
+              playersCardsGame={this.state.allPlayersCards}
               hitNextGame={this.hitNext}
             />
             <DefaultBtn
