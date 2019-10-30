@@ -11,9 +11,10 @@ export default class Game extends Component {
     this.state = {
       handOpen: false,
       playerIndexTurn: 0,
+      dealerTurn: false,
       numberOfDecks: 1,
       dealerPoints: 0,
-      numberOfPlayers: 2,
+      numberOfPlayers: 4,
       playerPoints: 0,
       cardsDealt: [],
       allPlayersCards: [],
@@ -77,12 +78,18 @@ export default class Game extends Component {
     fetch(deckOfCardsUrl)
       .then(status)
       .then(json)
-      .then(data =>
-        this.setState({
-          cardsDealt: this.state.cardsDealt.concat(data.cards),
-          handOpen: true
-        })
-      )
+      .then(data => {
+        if (!this.state.dealerTurn) {
+          const { playerIndexTurn, allPlayersCards } = this.state
+          let previouslyDealtCards = allPlayersCards
+          let addedCard = allPlayersCards[playerIndexTurn].concat(data.cards[0])
+          let adjustedPlayersCards = allPlayersCards.map((item, key) => key !== playerIndexTurn ? item = item : item = addedCard)
+          console.log(addedCard, adjustedPlayersCards, allPlayersCards)
+          this.setState({
+            allPlayersCards: adjustedPlayersCards
+          })
+        }
+      })
       .catch(function(error) {
         console.log("Request failed", error)
       })
@@ -95,7 +102,7 @@ export default class Game extends Component {
   };
 
   consoleState = () => {
-    console.log(this.state)
+    console.log(this.state.allPlayersCards)
   }
 
   render() {
@@ -119,10 +126,6 @@ export default class Game extends Component {
               numPlayersGame={this.state.numberOfPlayers}
               playersCardsGame={this.state.allPlayersCards}
               hitNextGame={this.hitNext}
-            />
-            <DefaultBtn
-            callBackParent={this.hitNext}
-            txtParent={'Hit'}
             />
           </div>
         )}
