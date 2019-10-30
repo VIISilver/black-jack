@@ -13,6 +13,7 @@ export default function Player(props) {
             <DefaultBtn
             txtParent={'Hit'}
             callBackParent={props.hitNextPlayers}
+            disableBoolParent={!(props.playersTurnIndexPlayers === props.playerIdPlayers - 1)}
             />
         </div>
     )
