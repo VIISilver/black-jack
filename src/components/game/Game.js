@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import Dealer from "../dealer/Dealer";
-import Players from "../players/Players";
-import DefaultBtn from "../buttons/DefaultBtn";
-import BeforeDeal from "../beforeDeal/BeforeDeal";
-import "./Game.css";
+import React, { Component } from 'react'
+// import hitNext from '../../requests/hitNext'
+import Dealer from '../dealer/Dealer'
+import Players from '../players/Players'
+import DefaultBtn from '../buttons/DefaultBtn'
+import BeforeDeal from '../beforeDeal/BeforeDeal'
+import './Game.css'
 
 export default class Game extends Component {
   constructor(props) {
@@ -14,12 +15,11 @@ export default class Game extends Component {
       dealerTurn: false,
       numberOfDecks: 1,
       dealerPoints: 0,
-      numberOfPlayers: 1,
+      numberOfPlayers: 2,
       playerPoints: 0,
       cardsDealt: [],
       allPlayersCards: [],
-      dealersCards: [],
-      playerHits: 0
+      dealersCards: []
     };
   }
 
@@ -58,45 +58,43 @@ export default class Game extends Component {
       .catch(function(error) {
         console.log("Request failed", error);
       });
-  };
+  }
 
   hitNext = () => {
     let deckOfCardsUrl =
-      "https://deckofcardsapi.com/api/deck/hrosz2hydqqk/draw/?count=1";
+      "https://deckofcardsapi.com/api/deck/hrosz2hydqqk/draw/?count=1"
 
     function status(response) {
       if (response.status >= 200 && response.status < 300) {
-        return Promise.resolve(response);
+        return Promise.resolve(response)
       } else {
-        return Promise.reject(new Error(response.statusText));
+        return Promise.reject(new Error(response.statusText))
       }
     }
 
     function json(response) {
-      return response.json();
+      return response.json()
     }
 
     fetch(deckOfCardsUrl)
       .then(status)
       .then(json)
       .then(data => {
-        if (!this.state.dealerTurn) {
-          const { playerIndexTurn, allPlayersCards } = this.state;
-          let addedCard = allPlayersCards[playerIndexTurn].concat(
-            data.cards[0]
-          );
-          let adjustedPlayersCards = allPlayersCards.map((item, key) =>
-            key !== playerIndexTurn ? item : (item = addedCard)
-          );
-          this.setState({
-            allPlayersCards: adjustedPlayersCards
-          });
-        }
+        const { playerIndexTurn, allPlayersCards } = this.state
+        let addedCard = allPlayersCards[playerIndexTurn].concat(
+          data.cards[0]
+        )
+        let adjustedPlayersCards = allPlayersCards.map((item, key) =>
+          key !== playerIndexTurn ? item : (item = addedCard)
+        )
+        this.setState({
+          allPlayersCards: adjustedPlayersCards
+        })
       })
       .catch(function(error) {
-        console.log("Request failed", error);
-      });
-  };
+        console.log("Request failed", error)
+      })
+  }
 
   holdHand = () => {
     let nextPlayerTurn = this.state.playerIndexTurn + 1
@@ -107,12 +105,12 @@ export default class Game extends Component {
 
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
   shuffleDeck = () => {
-    fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/");
+    fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/")
   };
 
   consoleState = () => {
     console.log(this.state.allPlayersCards);
-  };
+  }
 
   render() {
     return (
@@ -140,6 +138,6 @@ export default class Game extends Component {
           </div>
         )}
       </div>
-    );
+    )
   }
 }
