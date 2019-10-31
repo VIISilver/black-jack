@@ -15,6 +15,11 @@ export default function Player(props) {
             callBackParent={props.hitNextPlayers}
             disableBoolParent={!(props.playersTurnIndexPlayers === props.playerIdPlayers - 1)}
             />
+            <DefaultBtn
+            txtParent={'Hold'}
+            callBackParent={props.holdHandPlayers}
+            disableBoolParent={!(props.playersTurnIndexPlayers === props.playerIdPlayers - 1)}
+            />
         </div>
     )
 }

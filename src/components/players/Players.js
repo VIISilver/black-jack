@@ -12,6 +12,7 @@ export default function Players(props) {
                 playerIdPlayers={key + 1}
                 playersCardsPlayers={item}
                 hitNextPlayers={props.hitNextGame}
+                holdHandPlayers={props.holdHandGame}
                 playersTurnIndexPlayers={props.playersTurnIndexGame}
                 />
             ))}

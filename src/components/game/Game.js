@@ -14,7 +14,7 @@ export default class Game extends Component {
       dealerTurn: false,
       numberOfDecks: 1,
       dealerPoints: 0,
-      numberOfPlayers: 4,
+      numberOfPlayers: 1,
       playerPoints: 0,
       cardsDealt: [],
       allPlayersCards: [],
@@ -86,9 +86,8 @@ export default class Game extends Component {
             data.cards[0]
           );
           let adjustedPlayersCards = allPlayersCards.map((item, key) =>
-            key !== playerIndexTurn ? (item = item) : (item = addedCard)
+            key !== playerIndexTurn ? item : (item = addedCard)
           );
-          console.log(addedCard, adjustedPlayersCards, allPlayersCards);
           this.setState({
             allPlayersCards: adjustedPlayersCards
           });
@@ -98,6 +97,13 @@ export default class Game extends Component {
         console.log("Request failed", error);
       });
   };
+
+  holdHand = () => {
+    let nextPlayerTurn = this.state.playerIndexTurn + 1
+    this.setState({
+      playerIndexTurn: this.state.playerIndexTurn + 1 === this.state.numberOfPlayers ? 0 : nextPlayerTurn
+    })
+  }
 
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
   shuffleDeck = () => {
@@ -128,6 +134,7 @@ export default class Game extends Component {
               numPlayersGame={this.state.numberOfPlayers}
               playersCardsGame={this.state.allPlayersCards}
               hitNextGame={this.hitNext}
+              holdHandGame={this.holdHand}
               playersTurnIndexGame={this.state.playerIndexTurn}
             />
           </div>
