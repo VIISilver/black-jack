@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-// import hitNext from '../../requests/hitNext'
+import { parseCardValues } from '../../functionalComp/HandValueFunctions'
 import Dealer from '../dealer/Dealer'
 import Players from '../players/Players'
 import DefaultBtn from '../buttons/DefaultBtn'
@@ -14,18 +14,38 @@ export default class Game extends Component {
       playerIndexTurn: 0,
       dealerTurn: false,
       numberOfDecks: 1,
-      dealerPoints: 0,
-      numberOfPlayers: 2,
-      playerPoints: 0,
+      dealerGamePoints: 0,
+      dealerHandPoints: [],
+      numberOfPlayers: 4,
+      bustArr: [],
+      playersHandPoints: [],
+      playersGamePoints: [],
       cardsDealt: [],
       allPlayersCards: [],
       dealersCards: []
     };
   }
 
+  componentDidMount() {
+    let playerIteration = this.state.numberOfPlayers
+    let bustArrToSet = []
+    let playersHandPointsArrToSet = []
+    let playersGamePointsArrToSet = []
+    for (let i = 0; i < playerIteration; i++) {
+      bustArrToSet.push(false)
+      playersHandPointsArrToSet.push(0)
+      playersGamePointsArrToSet.push(0)
+    }
+    this.setState({
+      bustArr: bustArrToSet,
+      playersHandPoints: playersHandPointsArrToSet,
+      playersGamePoints: playersGamePointsArrToSet
+    })
+  }
+
   newDeal = () => {
     let openingDeal = (this.state.numberOfPlayers + 1) * 2;
-    let deckOfCardsUrl = `https://deckofcardsapi.com/api/deck/hrosz2hydqqk/draw/?count=${openingDeal}`;
+    let deckOfCardsUrl = `https://deckofcardsapi.com/api/deck/hrosz2hydqqk/draw/?count=${openingDeal}`
 
     function status(response) {
       if (response.status >= 200 && response.status < 300) {
@@ -43,21 +63,21 @@ export default class Game extends Component {
       .then(status)
       .then(json)
       .then(data => {
-        let totalIteration = this.state.numberOfPlayers + 1;
-        let playerCards = [];
+        let totalIteration = this.state.numberOfPlayers + 1
+        let playerCards = []
         for (let i = 0; i < totalIteration; i++) {
-          playerCards.push([data.cards[i], data.cards[i + totalIteration]]);
+          playerCards.push([data.cards[i], data.cards[i + totalIteration]])
         }
         this.setState({
           cardsDealt: data.cards,
           allPlayersCards: playerCards.slice(0, playerCards.length - 1),
           dealersCards: playerCards[playerCards.length - 1],
           handOpen: true
-        });
+        })
       })
       .catch(function(error) {
         console.log("Request failed", error);
-      });
+      })
   }
 
   hitNext = () => {
@@ -84,11 +104,14 @@ export default class Game extends Component {
         let addedCard = allPlayersCards[playerIndexTurn].concat(
           data.cards[0]
         )
+
+        let playerPoints = parseCardValues(addedCard).reduce((acc, currentVal) => acc + currentVal)
         let adjustedPlayersCards = allPlayersCards.map((item, key) =>
           key !== playerIndexTurn ? item : (item = addedCard)
         )
         this.setState({
-          allPlayersCards: adjustedPlayersCards
+          allPlayersCards: adjustedPlayersCards,
+          playersHandPoints: playerPoints
         })
       })
       .catch(function(error) {
@@ -106,10 +129,10 @@ export default class Game extends Component {
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
   shuffleDeck = () => {
     fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/")
-  };
+  }
 
   consoleState = () => {
-    console.log(this.state.allPlayersCards);
+    console.log(this.state)
   }
 
   render() {
