@@ -2,3 +2,7 @@
     display: inline-block;
     margin: 1em;
 }
+
+.individual-player span {
+    color: red;
+}

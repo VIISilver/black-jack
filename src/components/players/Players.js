@@ -13,6 +13,7 @@ export default function Players(props) {
                 playersCardsPlayers={item}
                 hitNextPlayers={props.hitNextGame}
                 holdHandPlayers={props.holdHandGame}
+                playerBlackJackBoolPlayers={props.playersBlackJackBoolArrGame[key]}
                 playersTurnIndexPlayers={props.playersTurnIndexGame}
                 />
             ))}

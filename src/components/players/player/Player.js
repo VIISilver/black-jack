@@ -6,7 +6,7 @@ import './Player.css'
 export default function Player(props) {
     return (
         <div className='individual-player'>
-            <h3>Player {props.playerIdPlayers}</h3>
+            <h3>Player {props.playerIdPlayers}<span style={{display: props.playerBlackJackBoolPlayers ? "inline-block" : "none"}}>&nbsp;got a BlackJack!!!</span></h3>
             <Cards
             playersCardsIndividual={props.playersCardsPlayers}
             />
