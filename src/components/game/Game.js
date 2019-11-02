@@ -18,6 +18,8 @@ export default class Game extends Component {
       dealerHandPoints: [],
       numberOfPlayers: 4,
       bustArr: [],
+      dealerBlackJackBool: false,
+      blackJackArr: [],
       playersHandPoints: [],
       playersGamePoints: [],
       cardsDealt: [],
@@ -29,16 +31,13 @@ export default class Game extends Component {
   componentDidMount() {
     let playerIteration = this.state.numberOfPlayers
     let bustArrToSet = []
-    let playersHandPointsArrToSet = []
     let playersGamePointsArrToSet = []
     for (let i = 0; i < playerIteration; i++) {
       bustArrToSet.push(false)
-      playersHandPointsArrToSet.push(0)
       playersGamePointsArrToSet.push(0)
     }
     this.setState({
       bustArr: bustArrToSet,
-      playersHandPoints: playersHandPointsArrToSet,
       playersGamePoints: playersGamePointsArrToSet
     })
   }
@@ -68,10 +67,19 @@ export default class Game extends Component {
         for (let i = 0; i < totalIteration; i++) {
           playerCards.push([data.cards[i], data.cards[i + totalIteration]])
         }
+        let openingHandPtsArr = playerCards.map(item => parseCardValues(item))
+        let playersOpenHandPts = openingHandPtsArr.slice(0, playerCards.length - 1)
+        let dealersOpeningHandPts = openingHandPtsArr[playerCards.length - 1]
+        let playerBlackJackBoolArr = playersOpenHandPts.map(item => item === 21)
+        let blackJackDealerBool = dealersOpeningHandPts === 21
         this.setState({
           cardsDealt: data.cards,
           allPlayersCards: playerCards.slice(0, playerCards.length - 1),
           dealersCards: playerCards[playerCards.length - 1],
+          playersHandPoints: playersOpenHandPts,
+          blackJackArr: playerBlackJackBoolArr,
+          dealerHandPoints: dealersOpeningHandPts,
+          dealerBlackJackBool: blackJackDealerBool,
           handOpen: true
         })
       })
@@ -105,7 +113,7 @@ export default class Game extends Component {
           data.cards[0]
         )
 
-        let playerPoints = parseCardValues(addedCard).reduce((acc, currentVal) => acc + currentVal)
+        let playerPoints = parseCardValues(addedCard)
         let adjustedPlayersCards = allPlayersCards.map((item, key) =>
           key !== playerIndexTurn ? item : (item = addedCard)
         )
