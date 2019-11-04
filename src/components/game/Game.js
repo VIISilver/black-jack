@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { parseCardValues } from "../../functionalComp/HandValueFunctions";
+import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import DefaultBtn from "../buttons/DefaultBtn";
@@ -115,16 +116,21 @@ export default class Game extends Component {
       .then(status)
       .then(json)
       .then(data => {
-        const { playerIndexTurn, allPlayersCards } = this.state;
+        const { playerIndexTurn, allPlayersCards, playersHandPoints } = this.state;
         let addedCard = allPlayersCards[playerIndexTurn].concat(data.cards[0]);
 
         let playerPoints = parseCardValues(addedCard);
+        if (playerPoints >= 21) {
+          this.holdHand()
+        }
+
+        let adjustedPlayersHandPoints = playersHandPoints.map((item, key) => key !== playerIndexTurn ? item : (item = playerPoints))
         let adjustedPlayersCards = allPlayersCards.map((item, key) =>
           key !== playerIndexTurn ? item : (item = addedCard)
         );
         this.setState({
           allPlayersCards: adjustedPlayersCards,
-          playersHandPoints: playerPoints
+          playersHandPoints: adjustedPlayersHandPoints
         });
       })
       .catch(function(error) {
@@ -133,12 +139,9 @@ export default class Game extends Component {
   };
 
   holdHand = () => {
-    let nextPlayerTurn = this.state.playerIndexTurn + 1;
+    let nextPlayerNotBlackJack = nextNotBlackJack(this.state.playerIndexTurn, this.state.blackJackArr)
     this.setState({
-      playerIndexTurn:
-        this.state.playerIndexTurn + 1 === this.state.numberOfPlayers
-          ? 0
-          : nextPlayerTurn
+      playerIndexTurn: nextPlayerNotBlackJack
     });
   };
 
@@ -174,6 +177,7 @@ export default class Game extends Component {
               holdHandGame={this.holdHand}
               playersTurnIndexGame={this.state.playerIndexTurn}
               playersBlackJackBoolArrGame={this.state.blackJackArr}
+              playerPointsGame={this.state.playersHandPoints}
             />
           </div>
         )}

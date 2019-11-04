@@ -15,6 +15,7 @@ export default function Players(props) {
                 holdHandPlayers={props.holdHandGame}
                 playerBlackJackBoolPlayers={props.playersBlackJackBoolArrGame[key]}
                 playersTurnIndexPlayers={props.playersTurnIndexGame}
+                playerPointsPlayers={props.playerPointsGame[key]}
                 />
             ))}
         </div>
