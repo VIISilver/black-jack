@@ -5,7 +5,7 @@ import './Dealer.css'
 export default function Dealer(props) {
     return (
         <div className='dealer-wrap'>
-            <h3>Dealer<span style={{display: props.dealerBlackJackBoolGame ? "inline-block" : "none"}}>&nbsp;got a BlackJack!!!</span></h3>
+            <h3>Dealer</h3>
             <Cards
             isDealer={true}
             dealerCardsDealer={props.dealerCardsGame}

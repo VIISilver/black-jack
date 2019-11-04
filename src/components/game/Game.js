@@ -76,9 +76,11 @@ export default class Game extends Component {
         let playerBlackJackBoolArr = playersOpenHandPts.map(
           item => item === 21
         );
+        let startingPlayer = playerBlackJackBoolArr.findIndex(item => item === false)
         let blackJackDealerBool = dealersOpeningHandPts === 21;
         this.setState({
           cardsDealt: data.cards,
+          playerIndexTurn: startingPlayer,
           allPlayersCards: playerCards.slice(0, playerCards.length - 1),
           dealersCards: playerCards[playerCards.length - 1],
           playersHandPoints: playersOpenHandPts,
@@ -164,10 +166,7 @@ export default class Game extends Component {
           />
         ) : (
           <div>
-            <Dealer
-              dealerCardsGame={this.state.dealersCards}
-              dealerBlackJackBoolGame={this.state.dealerBlackJackBool}
-            />
+            <Dealer dealerCardsGame={this.state.dealersCards} />
             <Players
               numPlayersGame={this.state.numberOfPlayers}
               playersCardsGame={this.state.allPlayersCards}
