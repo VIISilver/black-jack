@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { parseCardValues } from "../../functionalComp/HandValueFunctions";
 import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
+import { checkAces } from "../../functionalComp/CheckAces";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import DefaultBtn from "../buttons/DefaultBtn";
@@ -121,8 +122,10 @@ export default class Game extends Component {
 
         let playerPoints = parseCardValues(addedCard);
         if (playerPoints >= 21) {
-          this.holdHand()
         }
+        // if (playerPoints >= 21) {
+        //   this.holdHand()
+        // }
 
         let adjustedPlayersHandPoints = playersHandPoints.map((item, key) => key !== playerIndexTurn ? item : (item = playerPoints))
         let adjustedPlayersCards = allPlayersCards.map((item, key) =>
