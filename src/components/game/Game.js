@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { parseCardValues } from "../../functionalComp/HandValueFunctions";
+import { parseCardValues, parseDataObject, parseCardArr } from "../../functionalComp/HandValueFunctions";
 import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
 import { checkAces } from "../../functionalComp/CheckAces";
 import Dealer from "../dealer/Dealer";
@@ -121,11 +121,15 @@ export default class Game extends Component {
         let addedCard = allPlayersCards[playerIndexTurn].concat(data.cards[0]);
 
         let playerPoints = parseCardValues(addedCard);
-        if (playerPoints >= 21) {
+        if (playerPoints > 21 && parseDataObject(addedCard).includes('ACE')){
+          // while (playerPoints >= 21) {
+          //   playerPoints = parseCardValues(addedCard.join(',').replace(',11,', ',1,').split(',').map(item => +item)).reduce((acc, currVal) => acc + currVal)
+          // }
+          console.log(parseDataObject(addedCard))
         }
-        // if (playerPoints >= 21) {
-        //   this.holdHand()
-        // }
+        if (playerPoints >= 21 && !parseDataObject(addedCard).includes('ACE')) {
+          this.holdHand()
+        }
 
         let adjustedPlayersHandPoints = playersHandPoints.map((item, key) => key !== playerIndexTurn ? item : (item = playerPoints))
         let adjustedPlayersCards = allPlayersCards.map((item, key) =>

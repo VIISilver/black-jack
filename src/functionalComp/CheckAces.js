@@ -1,4 +1,3 @@
 export function checkAces(cardsArr) {
-    let indexOfAce = cardsArr.findIndex(item => item === 11)
-    return cardsArr.splice(indexOfAce, 1, 1)
+    return cardsArr.join(',').replace(',11,', ',1,').split(',').map(item => +item)
 }

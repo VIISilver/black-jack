@@ -1,11 +1,18 @@
-export function parseCardValues(cardArr) {
-  let cards = cardArr.map(item => item.value)
-  let cardHandValue = cards.map(item =>
+export function parseDataObject(cardArrRaw) {
+  return cardArrRaw.map(item => item.value)
+}
+
+export function parseCardArr(cardArrStr) {
+  let cardsInt = parseDataObject(cardArrStr)
+  return cardsInt.map(item =>
     item === "JACK" || item === "QUEEN" || item === "KING"
       ? 10
       : item === "ACE"
       ? 11
       : parseInt(item)
   )
-  return cardHandValue.reduce((acc, currentVal) => acc + currentVal)
+}
+
+export function parseCardValues(cardArrInt) {
+  return parseCardArr(cardArrInt).reduce((acc, currentVal) => acc + currentVal)
 }
