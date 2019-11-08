@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { parseCardValues, parseDataObject, parseCardArr } from "../../functionalComp/HandValueFunctions";
 import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
-import { checkAces } from "../../functionalComp/CheckAces";
+// import { checkAces } from "../../functionalComp/CheckAces";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import DefaultBtn from "../buttons/DefaultBtn";
@@ -121,14 +121,26 @@ export default class Game extends Component {
         let addedCard = allPlayersCards[playerIndexTurn].concat(data.cards[0]);
 
         let playerPoints = parseCardValues(addedCard);
-        if (playerPoints > 21 && parseDataObject(addedCard).includes('ACE')){
-          // while (playerPoints >= 21) {
-          //   playerPoints = parseCardValues(addedCard.join(',').replace(',11,', ',1,').split(',').map(item => +item)).reduce((acc, currVal) => acc + currVal)
-          // }
-          console.log(parseDataObject(addedCard))
+        let playerStrVals = parseDataObject(addedCard)
+        if (playerPoints > 21 && playerStrVals.includes('ACE')){
+          recursiveAces(addedCard)
+          function recursiveAces(updatedCardArr) {
+              let newValues = updatedCardArr.map(item => item.value).join(',').replace('ACE', '1').split(',')
+              let newCardObj = updatedCardArr.map((item, index) => {
+              let cardNew = new Object()
+              cardNew.image = item['image']
+              cardNew.value = newValues[index]
+              return cardNew
+            })
+            // if (parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj)) {
+            //   recursiveAces(newCardObj)
+            // }
+            addedCard = newCardObj
+          }
         }
-        if (playerPoints >= 21 && !parseDataObject(addedCard).includes('ACE')) {
+        if (playerPoints >= 21 && !parseCardArr(addedCard).includes(11)) {
           this.holdHand()
+          console.log('holdHand() fired')
         }
 
         let adjustedPlayersHandPoints = playersHandPoints.map((item, key) => key !== playerIndexTurn ? item : (item = playerPoints))
