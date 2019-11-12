@@ -92,7 +92,7 @@ export default class Game extends Component {
           handOpen: true
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log("Request failed", error);
       });
   };
@@ -122,20 +122,23 @@ export default class Game extends Component {
 
         let playerPoints = parseCardValues(addedCard);
         let playerStrVals = parseDataObject(addedCard)
-        if (playerPoints > 21 && playerStrVals.includes('ACE')){
+        if (playerPoints > 21 && playerStrVals.includes('ACE')) {
           recursiveAces(addedCard)
           function recursiveAces(updatedCardArr) {
-              let newValues = updatedCardArr.map(item => item.value).join(',').replace('ACE', '1').split(',')
-              let newCardObj = updatedCardArr.map((item, index) => {
+            let newValues = updatedCardArr.map(item => item.value).join(',').replace('ACE', '1').split(',')
+            let newCardObj = updatedCardArr.map((item, index) => {
               let cardNew = new Object()
               cardNew.image = item['image']
               cardNew.value = newValues[index]
               return cardNew
             })
-            // if (parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj)) {
-            //   recursiveAces(newCardObj)
-            // }
-            addedCard = newCardObj
+
+            if (parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj).includes('ACE')) {
+              recursiveAces(newCardObj)
+            } else {
+              console.log(parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj).includes('ACE'))
+              return newCardObj
+            }
           }
         }
         if (playerPoints >= 21 && !parseCardArr(addedCard).includes(11)) {
@@ -152,7 +155,7 @@ export default class Game extends Component {
           playersHandPoints: adjustedPlayersHandPoints
         });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log("Request failed", error);
       });
   };
@@ -187,19 +190,19 @@ export default class Game extends Component {
             shuffleDeckParent={this.shuffleDeck}
           />
         ) : (
-          <div>
-            <Dealer dealerCardsGame={this.state.dealersCards} />
-            <Players
-              numPlayersGame={this.state.numberOfPlayers}
-              playersCardsGame={this.state.allPlayersCards}
-              hitNextGame={this.hitNext}
-              holdHandGame={this.holdHand}
-              playersTurnIndexGame={this.state.playerIndexTurn}
-              playersBlackJackBoolArrGame={this.state.blackJackArr}
-              playerPointsGame={this.state.playersHandPoints}
-            />
-          </div>
-        )}
+            <div>
+              <Dealer dealerCardsGame={this.state.dealersCards} />
+              <Players
+                numPlayersGame={this.state.numberOfPlayers}
+                playersCardsGame={this.state.allPlayersCards}
+                hitNextGame={this.hitNext}
+                holdHandGame={this.holdHand}
+                playersTurnIndexGame={this.state.playerIndexTurn}
+                playersBlackJackBoolArrGame={this.state.blackJackArr}
+                playerPointsGame={this.state.playersHandPoints}
+              />
+            </div>
+          )}
       </div>
     );
   }
