@@ -124,23 +124,26 @@ export default class Game extends Component {
         let playerStrVals = parseDataObject(addedCard)
         if (playerPoints > 21 && playerStrVals.includes('ACE')) {
           recursiveAces(addedCard)
-          function recursiveAces(updatedCardArr) {
-            let newValues = updatedCardArr.map(item => item.value).join(',').replace('ACE', '1').split(',')
-            let newCardObj = updatedCardArr.map((item, index) => {
-              let cardNew = new Object()
-              cardNew.image = item['image']
-              cardNew.value = newValues[index]
-              return cardNew
-            })
+        }
 
-            if (parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj).includes('ACE')) {
-              recursiveAces(newCardObj)
-            } else {
-              console.log(parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj).includes('ACE'))
-              return newCardObj
+        function recursiveAces(updatedCardArr) {
+          let newValues = updatedCardArr.map(item => item.value).join(',').replace('ACE', '1').split(',')
+          let newCardObj = updatedCardArr.map((item, index) => {
+            let cardNew = {
+              image: item['image'],
+              value: newValues[index]
             }
+            return cardNew
+          })
+
+          if (parseCardValues(newCardObj) > 21 && parseDataObject(newCardObj).includes('ACE')) {
+            recursiveAces(newCardObj)
+          } else {
+            addedCard = newCardObj
+            playerPoints = parseCardValues(newCardObj)
           }
         }
+
         if (playerPoints >= 21 && !parseCardArr(addedCard).includes(11)) {
           this.holdHand()
           console.log('holdHand() fired')
