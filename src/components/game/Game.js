@@ -18,7 +18,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 4,
+      numberOfPlayers: 25,
       bustArr: [],
       dealerBlackJackBool: false,
       blackJackArr: [],
@@ -67,17 +67,20 @@ export default class Game extends Component {
         let totalIteration = this.state.numberOfPlayers + 1;
         let playerCards = [];
         for (let i = 0; i < totalIteration; i++) {
-          playerCards.push([data.cards[i], data.cards[i + totalIteration]]);
+          if (data.cards[i].value === 'ACE' && data.cards[i + totalIteration].value === 'ACE') {
+            let newFirstCard = {
+              image: data.cards[i].image,
+              value: '1'
+            }
+            playerCards.push([newFirstCard, data.cards[i + totalIteration]]);
+          } else {
+            playerCards.push([data.cards[i], data.cards[i + totalIteration]]);
+          }
         }
         let openingHandPtsArr = playerCards.map(item => parseCardValues(item));
-        let playersOpenHandPts = openingHandPtsArr.slice(
-          0,
-          playerCards.length - 1
-        );
+        let playersOpenHandPts = openingHandPtsArr.slice(0, playerCards.length - 1);
         let dealersOpeningHandPts = openingHandPtsArr[playerCards.length - 1];
-        let playerBlackJackBoolArr = playersOpenHandPts.map(
-          item => item === 21
-        );
+        let playerBlackJackBoolArr = playersOpenHandPts.map(item => item === 21);
         let startingPlayer = playerBlackJackBoolArr.findIndex(item => item === false)
         let blackJackDealerBool = dealersOpeningHandPts === 21;
         this.setState({
