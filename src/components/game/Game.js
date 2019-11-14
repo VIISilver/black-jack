@@ -18,7 +18,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 25,
+      numberOfPlayers: 2,
       bustArr: [],
       dealerBlackJackBool: false,
       blackJackArr: [],
@@ -149,7 +149,6 @@ export default class Game extends Component {
 
         if (playerPoints >= 21 && !parseCardArr(addedCard).includes(11)) {
           this.holdHand()
-          console.log('holdHand() fired')
         }
 
         let adjustedPlayersHandPoints = playersHandPoints.map((item, key) => key !== playerIndexTurn ? item : (item = playerPoints))
@@ -168,9 +167,17 @@ export default class Game extends Component {
 
   holdHand = () => {
     let nextPlayerNotBlackJack = nextNotBlackJack(this.state.playerIndexTurn, this.state.blackJackArr)
-    this.setState({
-      playerIndexTurn: nextPlayerNotBlackJack
-    });
+    console.log(nextPlayerNotBlackJack)
+    if (nextPlayerNotBlackJack === this.state.playerIndexTurn) {
+      console.log('this is where I need to fire the dealer function')
+      this.setState({
+        playerIndexTurn: -1
+      });
+    } else {
+      this.setState({
+        playerIndexTurn: nextPlayerNotBlackJack
+      });
+    }
   };
 
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
