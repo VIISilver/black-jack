@@ -17,7 +17,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 2,
+      numberOfPlayers: 1,
       bustArr: [],
       dealerBlackJackBool: false,
       blackJackArr: [],
@@ -164,11 +164,19 @@ export default class Game extends Component {
             playersHandPoints: adjustedPlayersHandPoints
           });
         } else {
-          this.setState({
-            dealersCards: addedCard,
-            dealerHandPoints: playerPoints
-          })
-          console.log(playerPoints, addedCard)
+          if (playerPoints < 21) {
+            this.setState({
+              dealersCards: addedCard,
+              dealerHandPoints: playerPoints
+            }, () => {
+              this.dealerActions(playerPoints)
+            })
+          } else {
+            this.setState({
+              dealersCards: addedCard,
+              dealerHandPoints: playerPoints
+            })
+          }
         }
       })
       .catch(function (error) {
@@ -178,7 +186,6 @@ export default class Game extends Component {
 
   holdHand = () => {
     let nextPlayerNotBlackJack = nextNotBlackJack(this.state.playerIndexTurn, this.state.blackJackArr)
-    console.log(nextPlayerNotBlackJack)
     if (nextPlayerNotBlackJack === this.state.playerIndexTurn) {
       this.setState({
         playerIndexTurn: -1
@@ -193,7 +200,7 @@ export default class Game extends Component {
   };
 
   dealerActions = (pointsForDealer) => {
-    if (pointsForDealer < 16) {
+    if (pointsForDealer < 21) {
       this.hitNext()
       
     } else {
