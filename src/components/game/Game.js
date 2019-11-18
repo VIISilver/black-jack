@@ -17,9 +17,10 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 1,
+      numberOfPlayers: 3,
       bustArr: [],
       dealerBlackJackBool: false,
+      cardsFlippedArr: [false, true],
       blackJackArr: [],
       playersHandPoints: [],
       playersGamePoints: [],
@@ -121,7 +122,7 @@ export default class Game extends Component {
       .then(data => {
         const { playerIndexTurn, allPlayersCards, playersHandPoints } = this.state;
         let addedCard = playerIndexTurn !== -1 ? allPlayersCards[playerIndexTurn].concat(data.cards[0]) :
-        this.state.dealersCards.concat(data.cards[0]);
+          this.state.dealersCards.concat(data.cards[0]);
 
         let playerPoints = parseCardValues(addedCard);
         let playerStrVals = parseDataObject(addedCard)
@@ -164,17 +165,23 @@ export default class Game extends Component {
             playersHandPoints: adjustedPlayersHandPoints
           });
         } else {
-          if (playerPoints < 21) {
+
+          // Dealer actions
+          let newFlipCards = this.state.cardsFlippedArr.map(item => item = true).concat(true)
+
+          if (playerPoints < 16) {
             this.setState({
               dealersCards: addedCard,
-              dealerHandPoints: playerPoints
+              dealerHandPoints: playerPoints,
+              cardsFlippedArr: newFlipCards
             }, () => {
               this.dealerActions(playerPoints)
             })
           } else {
             this.setState({
               dealersCards: addedCard,
-              dealerHandPoints: playerPoints
+              dealerHandPoints: playerPoints,
+              cardsFlippedArr: newFlipCards
             })
           }
         }
@@ -200,11 +207,14 @@ export default class Game extends Component {
   };
 
   dealerActions = (pointsForDealer) => {
-    if (pointsForDealer < 21) {
+    if (pointsForDealer < 16) {
       this.hitNext()
-      
     } else {
       console.log('Dealer holds and the winners are tallied')
+      let flippedCards = [true].concat(this.state.cardsFlippedArr.slice(1))
+      this.setState({
+        cardsFlippedArr: flippedCards
+      })
     }
   }
 
@@ -232,7 +242,10 @@ export default class Game extends Component {
           />
         ) : (
             <div>
-              <Dealer dealerCardsGame={this.state.dealersCards} />
+              <Dealer
+                dealerCardsGame={this.state.dealersCards}
+                cardsFlipArrGame={this.state.cardsFlippedArr}
+              />
               <Players
                 numPlayersGame={this.state.numberOfPlayers}
                 playersCardsGame={this.state.allPlayersCards}

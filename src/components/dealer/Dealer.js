@@ -7,9 +7,10 @@ export default function Dealer(props) {
         <div className='dealer-wrap'>
             <h3>Dealer</h3>
             <Cards
-            isDealer={true}
-            dealerCardsDealer={props.dealerCardsGame}
-             />
+                isDealer={true}
+                dealerCardsDealer={props.dealerCardsGame}
+                cardsFlipArrDealer={props.cardsFlipArrGame}
+            />
         </div>
     )
 }
