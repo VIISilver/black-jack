@@ -11,9 +11,7 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      handOpen: false,
       playerIndexTurn: 0,
-      dealerTurn: false,
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
@@ -91,8 +89,7 @@ export default class Game extends Component {
           playersHandPoints: playersOpenHandPts,
           blackJackArr: playerBlackJackBoolArr,
           dealerHandPoints: dealersOpeningHandPts,
-          dealerBlackJackBool: blackJackDealerBool,
-          handOpen: true
+          dealerBlackJackBool: blackJackDealerBool
         });
       })
       .catch(function (error) {
@@ -167,21 +164,20 @@ export default class Game extends Component {
         } else {
 
           // Dealer actions
-          let newFlipCards = this.state.cardsFlippedArr.map(item => item = true).concat(true)
 
           if (playerPoints < 16) {
             this.setState({
               dealersCards: addedCard,
-              dealerHandPoints: playerPoints,
-              cardsFlippedArr: newFlipCards
+              dealerHandPoints: playerPoints
             }, () => {
               this.dealerActions(playerPoints)
             })
           } else {
             this.setState({
               dealersCards: addedCard,
-              dealerHandPoints: playerPoints,
-              cardsFlippedArr: newFlipCards
+              dealerHandPoints: playerPoints
+            }, () => {
+              this.dealerActions(playerPoints)
             })
           }
         }
@@ -210,12 +206,25 @@ export default class Game extends Component {
     if (pointsForDealer < 16) {
       this.hitNext()
     } else {
-      console.log('Dealer holds and the winners are tallied')
-      let flippedCards = [true].concat(this.state.cardsFlippedArr.slice(1))
-      this.setState({
-        cardsFlippedArr: flippedCards
-      })
+      this.determineResultOfHand()
     }
+  }
+
+  determineResultOfHand = () => {
+
+    let newFlipCards = this.state.cardsFlippedArr.map(item => item = true).concat(true)
+
+    let dealerClosingPts = this.state.dealerHandPoints
+    let playerClosingPts = this.state.playersHandPoints
+
+    let winnersArr = playerClosingPts.map(item => item > dealerClosingPts ? 'winner' : item === dealerClosingPts ? 'tied' : 'loser')
+
+    let dealerUpdatedScore = this.state.dealerGamePoints + winnersArr.filter(item => item === 'loser').length * 2 + winnersArr.filter(item => item === 'tied').length
+
+    this.setState({
+      dealerGamePoints: dealerUpdatedScore,
+      cardsFlippedArr: newFlipCards
+    })
   }
 
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
