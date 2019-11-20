@@ -164,22 +164,12 @@ export default class Game extends Component {
         } else {
 
           // Dealer actions
-
-          if (playerPoints < 16) {
-            this.setState({
-              dealersCards: addedCard,
-              dealerHandPoints: playerPoints
-            }, () => {
-              this.dealerActions(playerPoints)
-            })
-          } else {
-            this.setState({
-              dealersCards: addedCard,
-              dealerHandPoints: playerPoints
-            }, () => {
-              this.dealerActions(playerPoints)
-            })
-          }
+          this.setState({
+            dealersCards: addedCard,
+            dealerHandPoints: playerPoints
+          }, () => {
+            this.dealerActions(playerPoints)
+          })
         }
       })
       .catch(function (error) {
@@ -211,17 +201,19 @@ export default class Game extends Component {
   }
 
   determineResultOfHand = () => {
-
+    let playerPtsCarried = this.state.playersGamePoints
     let newFlipCards = this.state.cardsFlippedArr.map(item => item = true).concat(true)
 
     let dealerClosingPts = this.state.dealerHandPoints
     let playerClosingPts = this.state.playersHandPoints
 
     let winnersArr = playerClosingPts.map(item => item > dealerClosingPts ? 'winner' : item === dealerClosingPts ? 'tied' : 'loser')
+    let playerPtsArr = winnersArr.map((item, key) => item === 'winner' ? 2 : item === 'tied' ? 1 : 0 + playerPtsCarried[key])
 
     let dealerUpdatedScore = this.state.dealerGamePoints + winnersArr.filter(item => item === 'loser').length * 2 + winnersArr.filter(item => item === 'tied').length
 
     this.setState({
+      playersGamePoints: playerPtsArr,
       dealerGamePoints: dealerUpdatedScore,
       cardsFlippedArr: newFlipCards
     })
