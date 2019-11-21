@@ -5,6 +5,7 @@ import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import DefaultBtn from "../buttons/DefaultBtn";
 import BeforeDeal from "../beforeDeal/BeforeDeal";
+import ResultModal from '../modals/ResultModal'
 import "./Game.css";
 
 export default class Game extends Component {
@@ -207,7 +208,7 @@ export default class Game extends Component {
 
   determineResultOfHand = () => {
     let playerPtsCarried = this.state.playersGamePoints
-    let newFlipCards = this.state.cardsFlippedArr.map(item => item = true).concat(true)
+    let newFlipCards = this.state.dealersCards.map(item => item = true)
 
     let dealerClosingPts = this.state.dealerHandPoints
     let playerClosingPts = this.state.playersHandPoints
@@ -236,6 +237,7 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game-wrap">
+        <ResultModal />
         <h1>Black Jack</h1>
         <DefaultBtn
           txtParent={"Console State"}
