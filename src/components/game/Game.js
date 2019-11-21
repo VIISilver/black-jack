@@ -15,7 +15,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 3,
+      numberOfPlayers: 1,
       bustArr: [],
       dealerBlackJackBool: false,
       cardsFlippedArr: [false, true],
@@ -24,6 +24,7 @@ export default class Game extends Component {
       playersGamePoints: [],
       cardsDealt: [],
       allPlayersCards: [],
+      resultsModal: false,
       dealersCards: []
     };
   }
@@ -90,6 +91,10 @@ export default class Game extends Component {
           blackJackArr: playerBlackJackBoolArr,
           dealerHandPoints: dealersOpeningHandPts,
           dealerBlackJackBool: blackJackDealerBool
+        }, () => {
+          if (blackJackDealerBool) {
+            this.determineResultOfHand()
+          }
         });
       })
       .catch(function (error) {
