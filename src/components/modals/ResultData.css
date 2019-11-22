@@ -1,7 +1,10 @@
 .result-data-wrap {
-    display: inline;
+    display: inline-block;
 }
 
 .result-data {
+    display: block;
     border: 2px solid black;
+    text-align: center;
+    width: 8rem;
 }

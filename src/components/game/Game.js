@@ -237,7 +237,10 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game-wrap">
-        <ResultModal resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)} />
+        <ResultModal
+          resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
+          nextHandGame={this.newDeal}
+        />
         <h1>Black Jack</h1>
         <DefaultBtn
           txtParent={"Console State"}
