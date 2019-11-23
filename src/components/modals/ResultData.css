@@ -4,7 +4,7 @@
 
 .result-data {
     display: block;
-    border: 2px solid black;
+    border: .5px solid black;
     text-align: center;
     width: 8rem;
 }

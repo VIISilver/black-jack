@@ -7,13 +7,15 @@ export default function ResultModal(props) {
     return (
         <div className='result-modal-wrap'>
             <p>Game Points Awarded</p>
-            {props.resultsGame.map((item, key) => (
-                <ResultData
-                    key={key}
-                    playerNameModal={key !== 0 ? `Player ${key}` : 'Dealer'}
-                    resultPtsModal={item}
-                />
-            ))}
+            <div>
+                {props.resultsGame.map((item, key) => (
+                    <ResultData
+                        key={key}
+                        playerNameModal={key !== 0 ? `Player ${key}` : 'Dealer'}
+                        resultPtsModal={item}
+                    />
+                ))}
+            </div>
             <DefaultBtn
                 displayBoolParent={false}
                 callBackParent={props.nextHandGame}
