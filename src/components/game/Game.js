@@ -213,8 +213,7 @@ export default class Game extends Component {
     let newFlipCards = this.state.dealersCards.map(item => item = true)
     let dealerBust = dealerHandPoints > 21
 
-    // let winnersArr = playersHandPoints.map(item => item > dealerHandPoints ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
-    let winnersArr = dealerBust ? playersHandPoints.map(item => (item < 21 || item === 21) ? 'winner' : 'loser') : playersHandPoints.map(item => (item < 21 && item > dealerHandPoints) || item === 21 ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
+    let winnersArr = dealerBust ? playersHandPoints.map(item => (item < 21 || item === 21) ? 'winner' : 'loser') : playersHandPoints.map(item => (item <= 21 && item > dealerHandPoints) ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
 
     let playerPtsArr = winnersArr.map((item, key) => (item === 'winner' ? 2 : item === 'tied' ? 1 : 0) + playersGamePoints[key])
 
