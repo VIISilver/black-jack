@@ -82,7 +82,7 @@ export default class Game extends Component {
         let dealersOpeningHandPts = openingHandPtsArr[playerCards.length - 1];
         let playerBlackJackBoolArr = playersOpenHandPts.map(item => item === 21);
         let startingPlayer = playerBlackJackBoolArr.findIndex(item => item === false)
-        let blackJackDealerBool = dealersOpeningHandPts === 21;
+        let blackJackDealerBool = dealersOpeningHandPts === 21
         this.setState({
           cardsDealt: data.cards,
           playerIndexTurn: startingPlayer,
@@ -94,7 +94,8 @@ export default class Game extends Component {
           cardsFlippedArr: [false, true],
           dealerBlackJackBool: blackJackDealerBool
         }, () => {
-          if (blackJackDealerBool) {
+          if (blackJackDealerBool || !playerBlackJackBoolArr.includes(false)) {
+            console.log(!playerBlackJackBoolArr.includes(false))
             this.determineResultOfHand()
           }
         });
@@ -208,16 +209,16 @@ export default class Game extends Component {
   }
 
   determineResultOfHand = () => {
-    const { dealerBust, playersGamePoints, dealerHandPoints, playersHandPoints } = this.state
+    const { playersGamePoints, dealerHandPoints, playersHandPoints } = this.state
     let newFlipCards = this.state.dealersCards.map(item => item = true)
+    let dealerBust = dealerHandPoints > 21
 
-    let winnersArr = playersHandPoints.map(item => item > dealerHandPoints ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
+    // let winnersArr = playersHandPoints.map(item => item > dealerHandPoints ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
+    let winnersArr = dealerBust ? playersHandPoints.map(item => (item < 21 || item === 21) ? 'winner' : 'loser') : playersHandPoints.map(item => (item < 21 && item > dealerHandPoints) || item === 21 ? 'winner' : item === dealerHandPoints ? 'tied' : 'loser')
 
     let playerPtsArr = winnersArr.map((item, key) => (item === 'winner' ? 2 : item === 'tied' ? 1 : 0) + playersGamePoints[key])
 
     let dealerUpdatedScore = this.state.dealerGamePoints + winnersArr.filter(item => item === 'loser').length * 2 + winnersArr.filter(item => item === 'tied').length
-
-    console.log(winnersArr, playersHandPoints[0] > dealerHandPoints)
 
     this.setState({
       playersGamePoints: playerPtsArr,
