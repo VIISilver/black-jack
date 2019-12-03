@@ -3,7 +3,6 @@ import { parseCardValues, parseDataObject, parseCardArr } from "../../functional
 import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
-import DefaultBtn from "../buttons/DefaultBtn";
 import BeforeDeal from "../beforeDeal/BeforeDeal";
 import ResultModal from '../modals/ResultModal'
 import "./Game.css";
@@ -16,7 +15,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 1,
+      numberOfPlayers: 4,
       bustArr: [],
       dealerBlackJackBool: false,
       cardsFlippedArr: [false, true],
@@ -96,7 +95,6 @@ export default class Game extends Component {
           resultsModal: false
         }, () => {
           if (blackJackDealerBool || !playerBlackJackBoolArr.includes(false)) {
-            console.log(!playerBlackJackBoolArr.includes(false))
             this.determineResultOfHand()
           }
         });
@@ -233,10 +231,6 @@ export default class Game extends Component {
     fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/");
   };
 
-  consoleState = () => {
-    console.log(this.state);
-  };
-
   render() {
     return (
       <div className="game-wrap">
@@ -246,10 +240,6 @@ export default class Game extends Component {
           displayResultsGame={this.state.resultsModal}
         />
         <h1>Black Jack</h1>
-        <DefaultBtn
-          txtParent={"Console State"}
-          callBackParent={this.consoleState}
-        />
         {this.state.cardsDealt.length === 0 ? (
           <BeforeDeal
             dealParent={this.newDeal}
@@ -260,7 +250,6 @@ export default class Game extends Component {
               <Dealer
                 dealerCardsGame={this.state.dealersCards}
                 cardsFlipArrGame={this.state.cardsFlippedArr}
-                pointsGameDealer={this.state.dealerHandPoints}
               />
               <Players
                 numPlayersGame={this.state.numberOfPlayers}
