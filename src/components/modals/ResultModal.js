@@ -5,7 +5,7 @@ import './ResultModal.css'
 
 export default function ResultModal(props) {
     return (
-        <div className='result-modal-wrap'>
+        <div className={props.displayResultsGame ? 'result-modal-wrap' : 'result-modal-hide'}>
             <p>Game Points Awarded</p>
             <div>
                 {props.resultsGame.map((item, key) => (

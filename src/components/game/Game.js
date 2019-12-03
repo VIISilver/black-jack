@@ -92,7 +92,8 @@ export default class Game extends Component {
           blackJackArr: playerBlackJackBoolArr,
           dealerHandPoints: dealersOpeningHandPts,
           cardsFlippedArr: [false, true],
-          dealerBlackJackBool: blackJackDealerBool
+          dealerBlackJackBool: blackJackDealerBool,
+          resultsModal: false
         }, () => {
           if (blackJackDealerBool || !playerBlackJackBoolArr.includes(false)) {
             console.log(!playerBlackJackBoolArr.includes(false))
@@ -222,7 +223,8 @@ export default class Game extends Component {
     this.setState({
       playersGamePoints: playerPtsArr,
       dealerGamePoints: dealerUpdatedScore,
-      cardsFlippedArr: newFlipCards
+      cardsFlippedArr: newFlipCards,
+      resultsModal: true
     })
   }
 
@@ -241,6 +243,7 @@ export default class Game extends Component {
         <ResultModal
           resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
           nextHandGame={this.newDeal}
+          displayResultsGame={this.state.resultsModal}
         />
         <h1>Black Jack</h1>
         <DefaultBtn
