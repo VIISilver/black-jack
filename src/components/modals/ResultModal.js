@@ -17,7 +17,6 @@ export default function ResultModal(props) {
                 ))}
             </div>
             <DefaultBtn
-                displayBoolParent={false}
                 callBackParent={props.nextHandGame}
                 txtParent={'Next Hand'}
             />

@@ -5,7 +5,7 @@ export default function DefaultBtn(props) {
   return (
     <Fragment>
       <button 
-        className={props.displayBoolParent ? 'display-none' : 'default-btn'}
+        className={props.disableBoolParent ? 'disable-btn' : 'default-btn'}
         disabled={props.disableBoolParent}
         onClick={props.callBackParent}
         >

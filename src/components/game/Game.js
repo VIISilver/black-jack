@@ -15,7 +15,7 @@ export default class Game extends Component {
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
-      numberOfPlayers: 4,
+      numberOfPlayers: 1,
       bustArr: [],
       dealerBlackJackBool: false,
       cardsFlippedArr: [false, true],
