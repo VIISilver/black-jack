@@ -5,6 +5,7 @@ import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import BeforeDeal from "../beforeDeal/BeforeDeal";
 import ResultModal from '../modals/results/ResultModal'
+import SetPlayers from '../modals/setPlayers/SetPlayers'
 import "./Game.css";
 
 export default class Game extends Component {
@@ -235,6 +236,7 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game-wrap">
+        <SetPlayers />
         <ResultModal
           resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
           nextHandGame={this.newDeal}
