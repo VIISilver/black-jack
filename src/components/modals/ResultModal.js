@@ -5,7 +5,7 @@ import './ResultModal.css'
 
 export default function ResultModal(props) {
     return (
-        <div className={props.displayResultsGame ? 'result-modal-wrap' : 'result-modal-hide'}>
+        <div className='result-modal-wrap'>
             <p>Game Points Awarded</p>
             <div>
                 {props.resultsGame.map((item, key) => (
@@ -18,6 +18,7 @@ export default function ResultModal(props) {
             </div>
             <DefaultBtn
                 callBackParent={props.nextHandGame}
+                disableBoolParent={props.disableNextHandBtn}
                 txtParent={'Next Hand'}
             />
         </div>

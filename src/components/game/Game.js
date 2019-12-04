@@ -24,7 +24,7 @@ export default class Game extends Component {
       playersGamePoints: [],
       cardsDealt: [],
       allPlayersCards: [],
-      resultsModal: false,
+      nextHandBtn: true,
       dealersCards: []
     };
   }
@@ -92,7 +92,7 @@ export default class Game extends Component {
           dealerHandPoints: dealersOpeningHandPts,
           cardsFlippedArr: [false, true],
           dealerBlackJackBool: blackJackDealerBool,
-          resultsModal: false
+          nextHandBtn: true
         }, () => {
           if (blackJackDealerBool || !playerBlackJackBoolArr.includes(false)) {
             this.determineResultOfHand()
@@ -222,7 +222,7 @@ export default class Game extends Component {
       playersGamePoints: playerPtsArr,
       dealerGamePoints: dealerUpdatedScore,
       cardsFlippedArr: newFlipCards,
-      resultsModal: true
+      nextHandBtn: false
     })
   }
 
@@ -237,7 +237,7 @@ export default class Game extends Component {
         <ResultModal
           resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
           nextHandGame={this.newDeal}
-          displayResultsGame={this.state.resultsModal}
+          disableNextHandBtn={this.state.nextHandBtn}
         />
         <h1>Black Jack</h1>
         {this.state.cardsDealt.length === 0 ? (
