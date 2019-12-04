@@ -1,6 +1,6 @@
 import React from 'react'
 import ResultData from './ResultData'
-import DefaultBtn from '../buttons/DefaultBtn'
+import DefaultBtn from '../../buttons/DefaultBtn'
 import './ResultModal.css'
 
 export default function ResultModal(props) {

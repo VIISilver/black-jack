@@ -4,7 +4,7 @@ import { nextNotBlackJack } from "../../functionalComp/NextNotBlackJack";
 import Dealer from "../dealer/Dealer";
 import Players from "../players/Players";
 import BeforeDeal from "../beforeDeal/BeforeDeal";
-import ResultModal from '../modals/ResultModal'
+import ResultModal from '../modals/results/ResultModal'
 import "./Game.css";
 
 export default class Game extends Component {
@@ -222,6 +222,7 @@ export default class Game extends Component {
       playersGamePoints: playerPtsArr,
       dealerGamePoints: dealerUpdatedScore,
       cardsFlippedArr: newFlipCards,
+      playerIndexTurn: -1,
       nextHandBtn: false
     })
   }
