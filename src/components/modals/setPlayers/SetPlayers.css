@@ -1,0 +1,18 @@
+.set-players-wrap {
+    position: fixed;
+    width: 30em;
+    height: 8em;
+    top: 50%;
+    left: 50%;
+    margin-top: -5em; /* Negative half of height. */
+    margin-left: -17em; /* Negative half of width. */
+    border-radius: .2em;
+    padding: 1em 2em;
+    font-size: 1rem;
+    background-color: gray;
+    color: white;
+}
+
+.set-players-hide {
+    display: none;
+}

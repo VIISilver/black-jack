@@ -7,7 +7,7 @@ export default function SetPlayers(props) {
     let potentialNumberOfPlayers = ["1", "2", "3", "4", "5"]
 
     return (
-        <div>
+        <div className={props.numOfPlayersShow ? 'set-players-wrap' : 'set-players-hide'}>
             <h3>Please select the number of players</h3>
             {potentialNumberOfPlayers.map((item, key) => (
                 <DefaultBtn

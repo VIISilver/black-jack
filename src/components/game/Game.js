@@ -13,6 +13,7 @@ export default class Game extends Component {
     super(props);
     this.state = {
       playerIndexTurn: 0,
+      numberOfPlayersModal: true,
       numberOfDecks: 1,
       dealerGamePoints: 0,
       dealerHandPoints: [],
@@ -241,7 +242,8 @@ export default class Game extends Component {
       }
       this.setState({
         bustArr: bustArrToSet,
-        playersGamePoints: playersGamePointsArrToSet
+        playersGamePoints: playersGamePointsArrToSet,
+        numberOfPlayersModal: false
       });
     })
   }
@@ -254,7 +256,9 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game-wrap">
-        <SetPlayers numOfPlayersCallBackGame={this.selectNumberOfPlayers} />
+        <SetPlayers 
+        numOfPlayersCallBackGame={this.selectNumberOfPlayers}
+        numOfPlayersShow={this.state.numberOfPlayersModal} />
         <ResultModal
           resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
           nextHandGame={this.newDeal}
