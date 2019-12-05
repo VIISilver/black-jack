@@ -228,6 +228,12 @@ export default class Game extends Component {
     })
   }
 
+  selectNumberOfPlayers = (e) => {
+    this.setState({
+      numberOfPlayers: parseInt(e.target.id)
+    })
+  }
+
   // If you are not getting an opening deal then shuffle the deck (API Quirk)
   shuffleDeck = () => {
     fetch("https://deckofcardsapi.com/api/deck/hrosz2hydqqk/shuffle/");
@@ -236,7 +242,7 @@ export default class Game extends Component {
   render() {
     return (
       <div className="game-wrap">
-        <SetPlayers />
+        <SetPlayers numOfPlayersCallBackGame={this.selectNumberOfPlayers} />
         <ResultModal
           resultsGame={[this.state.dealerGamePoints].concat(this.state.playersGamePoints)}
           nextHandGame={this.newDeal}
