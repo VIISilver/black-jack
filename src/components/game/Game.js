@@ -164,7 +164,7 @@ export default class Game extends Component {
             if (playerPoints > 21 && !parseCardArr(addedCard).includes(11)) {
               this.holdHand()
             }
-    
+
             if (playerPoints === 21) {
               this.holdHand()
             }
@@ -231,6 +231,18 @@ export default class Game extends Component {
   selectNumberOfPlayers = (e) => {
     this.setState({
       numberOfPlayers: parseInt(e.target.id)
+    }, () => {
+      let playerIteration = this.state.numberOfPlayers;
+      let bustArrToSet = [];
+      let playersGamePointsArrToSet = [];
+      for (let i = 0; i < playerIteration; i++) {
+        bustArrToSet.push(false);
+        playersGamePointsArrToSet.push(0);
+      }
+      this.setState({
+        bustArr: bustArrToSet,
+        playersGamePoints: playersGamePointsArrToSet
+      });
     })
   }
 
